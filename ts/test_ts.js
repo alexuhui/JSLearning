@@ -1,4 +1,8 @@
 "use strict";
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 exports.__esModule = true;
 exports.test = void 0;
 var test = /** @class */ (function () {
@@ -65,6 +69,86 @@ var test = /** @class */ (function () {
         console.log(" value = " + value2 + "   String(value2) : " + String(value2)); // "true"
         console.log(" value = " + value3 + "   String(value3) : " + String(value3)); // "null"
         console.log(" value = " + value4 + "   String(value4) : " + String(value4)); // "undefined"
+        var myMultiLineString = 'first line\nsecond line';
+        var myMultiLineTemplateLiteral = "first line\nsecond line";
+        console.log(myMultiLineString);
+        console.log(myMultiLineTemplateLiteral);
+        console.log(myMultiLineString === myMultiLineTemplateLiteral); // true
+        var value = 5;
+        var exponent = 'second';
+        // 以前，字符串插值是这样实现的：
+        var interpolatedString = value + ' to the ' + exponent + ' power is ' + (value * value);
+        // 现在，可以用模板字面量这样实现：
+        var interpolatedTemplateLiteral = value + " to the " + exponent + " power is " + value * value;
+        console.log(interpolatedString); // 5 to the second power is 25
+        console.log(interpolatedTemplateLiteral); // 5 to the second power is 25
+        //所有插入的值都会使用toString()强制转型为字符串，而且任何JavaScript表达式都可以用于插值。嵌套的模板字符串无须转义
+        console.log("Hello, " + "World" + "! "); // Hello, World!
+        //将表达式转换为字符串时会调用toString()
+        var foo = { toString: function () { return 'World'; } };
+        console.log("Hello, " + foo + "! "); // Hello, World!
+        // 这两句直接写到js是可以的，ts转js报错
+        // error TS2339: Property 'raw' does not exist on type 'StringConstructor'
+                console.log(String.raw`first line\nceconed line`);
+                console.log(String.raw`first line
+ceconed line`);
+    };
+    test.prototype.testTagFunction = function () {
+        var a = 6;
+        var b = 9;
+        function simpleTag(strings, aValExpression, bValExpression, sumExpression, test) {
+            console.log(strings); // 连接模板的字符串数组
+            console.log(aValExpression);
+            console.log(bValExpression);
+            console.log(sumExpression);
+            console.log('---------------- test : ' + test);
+            return 'foobar';
+        }
+        var untaggedResult = a + " + " + b + " = " + (a + b);
+        var taggedResult = simpleTag(templateObject_1 || (templateObject_1 = __makeTemplateObject(["", "+", "=", " - ", ""], ["", "+", "=", " - ", ""])), a, b, a + b, 20);
+        // ["", " + ", " = ", ""]
+        // 6
+        // 9
+        // 15
+        console.log(untaggedResult); // "6 + 9 = 15"
+        console.log(taggedResult); // "foobar"
+        //因为表达式参数的数量是可变的，所以通常应该使用剩余操作符（rest operator）将它们收集到一个数组中：
+        function simpleTag2(strings) {
+            var expressions = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                expressions[_i - 1] = arguments[_i];
+            }
+            console.log(strings);
+            for (var _a = 0, expressions_1 = expressions; _a < expressions_1.length; _a++) {
+                var expression = expressions_1[_a];
+                console.log(expression);
+            }
+            return 'foobar';
+        }
+        var taggedResult2 = simpleTag2(templateObject_2 || (templateObject_2 = __makeTemplateObject(["", " + ", " = ", "     ", " + ", " = ", ""], ["", " + ", " = ", "     ", " + ", " = ", ""])), a, b, a + b, a, b, a + b);
+        // ["", " + ", " = ", ""]
+        // 6
+        // 9
+        // 15
+        console.log(taggedResult2); // "foobar"
+        /**
+         * 对于有n个插值的模板字面量，传给标签函数的表达式参数的个数始终是n，
+         * 而传给标签函数的第一个参数所包含的字符串个数则始终是n+1。
+         * 因此，如果你想把这些字符串和对表达式求值的结果拼接起来作为默认返回的字符串
+         */
+        function zipTag(strings) {
+            var expressions = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                expressions[_i - 1] = arguments[_i];
+            }
+            return strings[0] +
+                expressions.map(function (e, i) { return "" + e + strings[i + 1]; })
+                    .join('');
+        }
+        var untaggedResult3 = a + " + " + b + " = " + (a + b);
+        var taggedResult3 = zipTag(templateObject_3 || (templateObject_3 = __makeTemplateObject(["fffff   ", " + ", " = ", "   ttttt"], ["fffff   ", " + ", " = ", "   ttttt"])), a, b, a + b);
+        console.log(untaggedResult3); // "6 + 9 = 15"
+        console.log(taggedResult3); // "6 + 9 = 15"
     };
     return test;
 }());
@@ -76,3 +160,5 @@ var ts = new test();
 // ts.testBool()
 // ts.testNum()
 ts.testString();
+ts.testTagFunction();
+var templateObject_1, templateObject_2, templateObject_3;
