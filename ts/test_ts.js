@@ -180,6 +180,13 @@ var test = /** @class */ (function () {
         // // 全局注册表中的符号必须使用字符串键来创建，因此作为参数传给Symbol.for()的任何值都会被转换为字符串。
         // let emptyGlobalSymbol = Symbol.for(); // 在ts中，这里将报错，提示必须有一个参数
         // console.log(emptyGlobalSymbol);     // Symbol(undefined)
+        // // 可以使用Symbol.keyFor()来查询全局注册表
+        // // 创建全局符号
+        // let s = Symbol.for('foo');
+        // console.log(Symbol.keyFor(s));    // foo
+        // // 创建普通符号
+        // let s2 = Symbol('bar');
+        // console.log(Symbol.keyFor(s2));   // undefined
     };
     return test;
 }());
@@ -191,6 +198,6 @@ var ts = new test();
 // ts.testBool()
 // ts.testNum()
 // ts.testString()
-// ts.testTagFunction()
-ts.testSymbol();
+ts.testTagFunction();
 var templateObject_1, templateObject_2, templateObject_3;
+// ts.testSymbol()
