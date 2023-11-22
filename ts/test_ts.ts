@@ -7,19 +7,17 @@ export class test {
 
     }
 
-    private innerDo(n: number): void{
+    private innerDo(n: number): void {
         console.log('innerDo : ', n);
     }
 
 
     private bool: boolean | null
     // private bool: boolean | null = null
-    testBool()
-    {
-        if (this.bool)
-        {
+    testBool() {
+        if (this.bool) {
             console.log(`true selector, bool is ${this.bool}`)
-        } else{
+        } else {
             console.log(`false selector, bool is ${this.bool}`)
         }
 
@@ -28,9 +26,9 @@ export class test {
         console.log(`null is ${Boolean(null)}`)
         console.log(`undefined is ${Boolean(undefined)}`)
     }
-    
+
     private num: number = 55
-    testNum(): void{
+    testNum(): void {
         console.log(`num ${this.num}`)
         this.num = 55.55
         console.log(`num ${this.num}`)
@@ -40,8 +38,22 @@ export class test {
         console.log(`num ${this.num}`)
         console.log(`min num ${Number.MIN_VALUE}`) //  min int ${Number.MIN_SAFE_INTEGER}`)
         console.log(`max num ${Number.MAX_VALUE}`) //   max int ${Number.MAX_SAFE_INTEGER}`)
-        console.log(`NaN == NaN is ${NaN == NaN}   ${isNaN(NaN)}`); 
-        console.log(`0/0 == NaN is ${(0/0) == NaN} ${isNaN(0/0)}`); 
+        console.log(`NaN == NaN is ${NaN == NaN}   ${isNaN(NaN)}`);
+        console.log(`0/0 == NaN is ${(0 / 0) == NaN} ${isNaN(0 / 0)}`);
+
+        console.log(`parseInt("10.5", 2)    : ${parseInt("10.5", 2)}`);    // 2，按二进制解析
+        console.log(`parseInt("10.5", 8)    : ${parseInt("10.5", 8)}`);    // 8，按八进制解析
+        console.log(`parseInt("10.5", 10)   : ${parseInt("10.5", 10)}`);   // 10，按十进制解析
+        console.log(`parseInt("10.5", 16)   : ${parseInt("10.5", 16)}`);   // 16，按十六进制解析
+
+        console.log(`parseFloat("10.5")     : ${parseFloat("10.5")}`);   // parseFloat()只解析十进制值，不能指定底数
+
+        console.log(`parseFloat("1234blue") : ${parseFloat("1234blue")}`);   // 1234，按整数解析
+        console.log(`parseFloat("0xA")      : ${parseFloat("0xA")}`);         // 0
+        console.log(`parseFloat("22.5")     : ${parseFloat("22.5")}`);        // 22.5
+        console.log(`parseFloat("22.34.5")  : ${parseFloat("22.34.5")}`);    // 22.34
+        console.log(`parseFloat("0908.5")   : ${parseFloat("0908.5")}`);     // 908.5
+        console.log(`parseFloat("3.125e7")  : ${parseFloat("3.125e7")}`);    // 31250000
     }
 }
 
@@ -49,7 +61,7 @@ export class test {
 
 let ts = new test()
 // ts.do(20)
-ts["do"](30)
-ts["innerDo"](30)
-ts.testBool()
+// ts["do"](30)
+// ts["innerDo"](30)// 通过方括号，可以调用私有(private)方法
+// ts.testBool()
 ts.testNum()

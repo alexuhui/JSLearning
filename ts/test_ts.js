@@ -38,13 +38,24 @@ var test = /** @class */ (function () {
         console.log("max num " + Number.MAX_VALUE); //   max int ${Number.MAX_SAFE_INTEGER}`)
         console.log("NaN == NaN is " + (NaN == NaN) + "   " + isNaN(NaN));
         console.log("0/0 == NaN is " + ((0 / 0) == NaN) + " " + isNaN(0 / 0));
+        console.log("parseInt(\"10.5\", 2)    : " + parseInt("10.5", 2)); // 2，按二进制解析
+        console.log("parseInt(\"10.5\", 8)    : " + parseInt("10.5", 8)); // 8，按八进制解析
+        console.log("parseInt(\"10.5\", 10)   : " + parseInt("10.5", 10)); // 10，按十进制解析
+        console.log("parseInt(\"10.5\", 16)   : " + parseInt("10.5", 16)); // 16，按十六进制解析
+        console.log("parseFloat(\"10.5\") : " + parseFloat("10.5")); // parseFloat()只解析十进制值，不能指定底数
+        console.log("parseFloat(\"1234blue\") : " + parseFloat("1234blue")); // 1234，按整数解析
+        console.log("parseFloat(\"0xA\")      : " + parseFloat("0xA")); // 0
+        console.log("parseFloat(\"22.5\")     : " + parseFloat("22.5")); // 22.5
+        console.log("parseFloat(\"22.34.5\")  : " + parseFloat("22.34.5")); // 22.34
+        console.log("parseFloat(\"0908.5\")   : " + parseFloat("0908.5")); // 908.5
+        console.log("parseFloat(\"3.125e7\")  : " + parseFloat("3.125e7")); // 31250000
     };
     return test;
 }());
 exports.test = test;
 var ts = new test();
 // ts.do(20)
-ts["do"](30);
-ts["innerDo"](30);
-ts.testBool();
+// ts["do"](30)
+// ts["innerDo"](30)// 通过方括号，可以调用私有(private)方法
+// ts.testBool()
 ts.testNum();
