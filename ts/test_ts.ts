@@ -54,6 +54,25 @@ export class test {
         console.log(`parseFloat("22.34.5")  : ${parseFloat("22.34.5")}`);    // 22.34
         console.log(`parseFloat("0908.5")   : ${parseFloat("0908.5")}`);     // 908.5
         console.log(`parseFloat("3.125e7")  : ${parseFloat("3.125e7")}`);    // 31250000
+
+        let num = 10;
+        console.log(`num = ${num}  num.toString()    ： ${num.toString()}`);      // "10"
+        console.log(`num = ${num}  num.toString(2)   ： ${num.toString(2)}`);     // "1010"
+        console.log(`num = ${num}  num.toString(8)   ： ${num.toString(8)}`);     // "12"
+        console.log(`num = ${num}  num.toString(10)  ： ${num.toString(10)}`);    // "10"
+        console.log(`num = ${num}  num.toString(16)  ： ${num.toString(16)}`);    // "a"
+    }
+
+
+    testString(): void {
+        let value1 = 10;
+        let value2 = true;
+        let value3 = null;
+        let value4;
+        console.log(` value = ${value1}   String(value1) : ${String(value1)}`); // "10"
+        console.log(` value = ${value2}   String(value2) : ${String(value2)}`);   // "true"
+        console.log(` value = ${value3}   String(value3) : ${String(value3)}`);   // "null"
+        console.log(` value = ${value4}   String(value4) : ${String(value4)}`);   // "undefined"
     }
 }
 
@@ -64,4 +83,5 @@ let ts = new test()
 // ts["do"](30)
 // ts["innerDo"](30)// 通过方括号，可以调用私有(private)方法
 // ts.testBool()
-ts.testNum()
+// ts.testNum()
+ts.testString()

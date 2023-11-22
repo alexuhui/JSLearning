@@ -42,13 +42,29 @@ var test = /** @class */ (function () {
         console.log("parseInt(\"10.5\", 8)    : " + parseInt("10.5", 8)); // 8，按八进制解析
         console.log("parseInt(\"10.5\", 10)   : " + parseInt("10.5", 10)); // 10，按十进制解析
         console.log("parseInt(\"10.5\", 16)   : " + parseInt("10.5", 16)); // 16，按十六进制解析
-        console.log("parseFloat(\"10.5\") : " + parseFloat("10.5")); // parseFloat()只解析十进制值，不能指定底数
+        console.log("parseFloat(\"10.5\")     : " + parseFloat("10.5")); // parseFloat()只解析十进制值，不能指定底数
         console.log("parseFloat(\"1234blue\") : " + parseFloat("1234blue")); // 1234，按整数解析
         console.log("parseFloat(\"0xA\")      : " + parseFloat("0xA")); // 0
         console.log("parseFloat(\"22.5\")     : " + parseFloat("22.5")); // 22.5
         console.log("parseFloat(\"22.34.5\")  : " + parseFloat("22.34.5")); // 22.34
         console.log("parseFloat(\"0908.5\")   : " + parseFloat("0908.5")); // 908.5
         console.log("parseFloat(\"3.125e7\")  : " + parseFloat("3.125e7")); // 31250000
+        var num = 10;
+        console.log("num = " + num + "  num.toString()    \uFF1A " + num.toString()); // "10"
+        console.log("num = " + num + "  num.toString(2)   \uFF1A " + num.toString(2)); // "1010"
+        console.log("num = " + num + "  num.toString(8)   \uFF1A " + num.toString(8)); // "12"
+        console.log("num = " + num + "  num.toString(10)  \uFF1A " + num.toString(10)); // "10"
+        console.log("num = " + num + "  num.toString(16)  \uFF1A " + num.toString(16)); // "a"
+    };
+    test.prototype.testString = function () {
+        var value1 = 10;
+        var value2 = true;
+        var value3 = null;
+        var value4;
+        console.log(" value = " + value1 + "   String(value1) : " + String(value1)); // "10"
+        console.log(" value = " + value2 + "   String(value2) : " + String(value2)); // "true"
+        console.log(" value = " + value3 + "   String(value3) : " + String(value3)); // "null"
+        console.log(" value = " + value4 + "   String(value4) : " + String(value4)); // "undefined"
     };
     return test;
 }());
@@ -58,4 +74,5 @@ var ts = new test();
 // ts["do"](30)
 // ts["innerDo"](30)// 通过方括号，可以调用私有(private)方法
 // ts.testBool()
-ts.testNum();
+// ts.testNum()
+ts.testString();
