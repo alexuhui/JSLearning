@@ -38,8 +38,8 @@ export class test {
         console.log(`num ${this.num}`)
         console.log(`min num ${Number.MIN_VALUE}`) //  min int ${Number.MIN_SAFE_INTEGER}`)
         console.log(`max num ${Number.MAX_VALUE}`) //   max int ${Number.MAX_SAFE_INTEGER}`)
-        console.log(`NaN == NaN is ${NaN == NaN}   ${isNaN(NaN)}`);
-        console.log(`0/0 == NaN is ${(0 / 0) == NaN} ${isNaN(0 / 0)}`);
+        // console.log(`NaN == NaN is ${NaN == NaN}   ${isNaN(NaN)}`);
+        // console.log(`0/0 == NaN is ${(0 / 0) == NaN} ${isNaN(0 / 0)}`);
 
         console.log(`parseInt("10.5", 2)    : ${parseInt("10.5", 2)}`);    // 2，按二进制解析
         console.log(`parseInt("10.5", 8)    : ${parseInt("10.5", 8)}`);    // 8，按八进制解析
@@ -161,6 +161,43 @@ second line`;
         console.log(untaggedResult3);   // "6 + 9 = 15"
         console.log(taggedResult3);     // "6 + 9 = 15"
     }
+
+    testSymbol() {
+        /**
+         * Symbol（符号）是ECMAScript 6新增的数据类型。
+         * 符号是原始值，且符号实例是唯一、不可变的。
+         * 符号的用途是确保对象属性使用唯一标识符，不会发生属性冲突的危险。
+         * 
+         * Symbol 编译报错
+         * error TS2585: 'Symbol' only refers to a type, 
+         * but is being used as a value here. 
+         * Do you need to change your target library? 
+         * Try changing the `lib` compiler option to es2015 or later.
+         * 
+         * 尝试添加tsconfig.json并设置"target": "es2015",也没有用
+         * tsc 加 --lib es2015 报更多的错  
+         *   
+         * 直接在js取消下面注释可正常跑    
+         */
+        let genericSymbol = Symbol();
+        let otherGenericSymbol = Symbol();
+        let fooSymbol = Symbol('foo');
+        let otherFooSymbol = Symbol('foo');
+        console.log(genericSymbol == otherGenericSymbol);   // false
+        console.log(fooSymbol == otherFooSymbol);             // false
+
+        // 全局符号注册表
+        let fooGlobalSymbol = Symbol.for('foo');         // 创建新符号
+        let otherFooGlobalSymbol = Symbol.for('foo');   // 重用已有符号
+        console.log(fooGlobalSymbol === otherFooGlobalSymbol);   // true
+        let localSymbol = Symbol('foo');
+        let globalSymbol = Symbol.for('foo');
+        console.log(localSymbol === globalSymbol); // false
+        
+        // 全局注册表中的符号必须使用字符串键来创建，因此作为参数传给Symbol.for()的任何值都会被转换为字符串。
+        // let emptyGlobalSymbol = Symbol.for(); // 在ts中，这里将报错，提示必须有一个参数
+        // console.log(emptyGlobalSymbol);     // Symbol(undefined)
+    }
 }
 
 
@@ -173,3 +210,4 @@ let ts = new test()
 // ts.testNum()
 // ts.testString()
 // ts.testTagFunction()
+ts.testSymbol()
