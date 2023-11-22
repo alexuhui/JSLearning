@@ -56,11 +56,11 @@ export class test {
         console.log(`parseFloat("3.125e7")  : ${parseFloat("3.125e7")}`);    // 31250000
 
         let num = 10;
-        console.log(`num = ${num}  num.toString()    ： ${num.toString()}`);      // "10"
-        console.log(`num = ${num}  num.toString(2)   ： ${num.toString(2)}`);     // "1010"
-        console.log(`num = ${num}  num.toString(8)   ： ${num.toString(8)}`);     // "12"
-        console.log(`num = ${num}  num.toString(10)  ： ${num.toString(10)}`);    // "10"
-        console.log(`num = ${num}  num.toString(16)  ： ${num.toString(16)}`);    // "a"
+        console.log(`num = ${num}  num.toString()    : ${num.toString()}`);      // "10"
+        console.log(`num = ${num}  num.toString(2)   : ${num.toString(2)}`);     // "1010"
+        console.log(`num = ${num}  num.toString(8)   : ${num.toString(8)}`);     // "12"
+        console.log(`num = ${num}  num.toString(10)  : ${num.toString(10)}`);    // "10"
+        console.log(`num = ${num}  num.toString(16)  : ${num.toString(16)}`);    // "a"
     }
 
 

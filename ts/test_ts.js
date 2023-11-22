@@ -50,11 +50,11 @@ var test = /** @class */ (function () {
         console.log("parseFloat(\"0908.5\")   : " + parseFloat("0908.5")); // 908.5
         console.log("parseFloat(\"3.125e7\")  : " + parseFloat("3.125e7")); // 31250000
         var num = 10;
-        console.log("num = " + num + "  num.toString()    \uFF1A " + num.toString()); // "10"
-        console.log("num = " + num + "  num.toString(2)   \uFF1A " + num.toString(2)); // "1010"
-        console.log("num = " + num + "  num.toString(8)   \uFF1A " + num.toString(8)); // "12"
-        console.log("num = " + num + "  num.toString(10)  \uFF1A " + num.toString(10)); // "10"
-        console.log("num = " + num + "  num.toString(16)  \uFF1A " + num.toString(16)); // "a"
+        console.log("num = " + num + "  num.toString()    : " + num.toString()); // "10"
+        console.log("num = " + num + "  num.toString(2)   : " + num.toString(2)); // "1010"
+        console.log("num = " + num + "  num.toString(8)   : " + num.toString(8)); // "12"
+        console.log("num = " + num + "  num.toString(10)  : " + num.toString(10)); // "10"
+        console.log("num = " + num + "  num.toString(16)  : " + num.toString(16)); // "a"
     };
     test.prototype.testString = function () {
         var value1 = 10;
