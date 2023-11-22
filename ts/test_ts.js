@@ -185,12 +185,12 @@ var test = /** @class */ (function () {
 }());
 exports.test = test;
 var ts = new test();
-ts.do(20);
-ts["do"](30);
-ts["innerDo"](30); // 通过方括号，可以调用私有(private)方法
-ts.testBool();
-ts.testNum();
-ts.testString();
-ts.testTagFunction();
+// ts.do(20)
+// ts["do"](30)
+// ts["innerDo"](30)// 通过方括号，可以调用私有(private)方法
+// ts.testBool()
+// ts.testNum()
+// ts.testString()
+// ts.testTagFunction()
 ts.testSymbol();
 var templateObject_1, templateObject_2, templateObject_3;
