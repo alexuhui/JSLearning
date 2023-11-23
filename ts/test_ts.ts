@@ -102,11 +102,11 @@ second line`;
         let foo = { toString: () => 'World' };
         console.log(`Hello, ${foo}! `);        // Hello, World!
 
-          // 这两句直接写到js是可以的，ts转js报错
-          // error TS2339: Property 'raw' does not exist on type 'StringConstructor'
-//         console.log(String.raw`first line\nceconed line`);
-//         console.log(String.raw`first line
-// ceconed line`);
+        // 这两句直接写到js是可以的，ts转js报错
+        // error TS2339: Property 'raw' does not exist on type 'StringConstructor'
+        //         console.log(String.raw`first line\nceconed line`);
+        //         console.log(String.raw`first line
+        // ceconed line`);
     }
 
     testTagFunction() {
@@ -130,15 +130,15 @@ second line`;
         console.log(taggedResult);      // "foobar"
 
 
-       //因为表达式参数的数量是可变的，所以通常应该使用剩余操作符（rest operator）将它们收集到一个数组中：
-        function simpleTag2(strings, ...expressions){
-          console.log(strings);
-          for(const expression of expressions) {
-            console.log(expression);
-          }
-          return 'foobar';
+        //因为表达式参数的数量是可变的，所以通常应该使用剩余操作符（rest operator）将它们收集到一个数组中：
+        function simpleTag2(strings, ...expressions) {
+            console.log(strings);
+            for (const expression of expressions) {
+                console.log(expression);
+            }
+            return 'foobar';
         }
-        let taggedResult2 = simpleTag2`${ a } + ${ b } = ${ a + b }     ${ a } + ${ b } = ${ a + b }`;
+        let taggedResult2 = simpleTag2`${a} + ${b} = ${a + b}     ${a} + ${b} = ${a + b}`;
         // ["", " + ", " = ", ""]
         // 6
         // 9
@@ -152,12 +152,12 @@ second line`;
          * 因此，如果你想把这些字符串和对表达式求值的结果拼接起来作为默认返回的字符串
          */
         function zipTag(strings, ...expressions) {
-          return strings[0] +
-                  expressions.map((e, i) => `${e}${strings[i + 1]}`)
-                            .join('');
+            return strings[0] +
+                expressions.map((e, i) => `${e}${strings[i + 1]}`)
+                    .join('');
         }
-        let untaggedResult3 =     `${ a } + ${ b } = ${ a + b }`;
-        let taggedResult3 = zipTag`fffff   ${ a } + ${ b } = ${ a + b }   ttttt`;
+        let untaggedResult3 = `${a} + ${b} = ${a + b}`;
+        let taggedResult3 = zipTag`fffff   ${a} + ${b} = ${a + b}   ttttt`;
         console.log(untaggedResult3);   // "6 + 9 = 15"
         console.log(taggedResult3);     // "6 + 9 = 15"
     }
@@ -190,7 +190,7 @@ second line`;
         // let localSymbol = Symbol('foo');
         // let globalSymbol = Symbol.for('foo');
         // console.log(localSymbol === globalSymbol); // false
-        
+
         // // 全局注册表中的符号必须使用字符串键来创建，因此作为参数传给Symbol.for()的任何值都会被转换为字符串。
         // let emptyGlobalSymbol = Symbol.for(); // 在ts中，这里将报错，提示必须有一个参数
         // console.log(emptyGlobalSymbol);     // Symbol(undefined)
@@ -202,6 +202,100 @@ second line`;
         // // 创建普通符号
         // let s2 = Symbol('bar');
         // console.log(Symbol.keyFor(s2));   // undefined
+
+        /**
+         * 凡是可以使用字符串或数值作为属性的地方，都可以使用符号。
+         * 这就包括了对象字面量属性和Object.defineProperty()/Object.defineProperties()定义的属性。
+         * 对象字面量只能在计算属性语法中使用符号作为属性。
+         */
+        // let s1 = Symbol('foo'),
+        //     s2 = Symbol('bar'),
+        //     s3 = Symbol('baz'),
+        //     s4 = Symbol('qux');
+        // let o = {
+        //     [s1]: 'foo val'
+        // };
+        // // 这样也可以：o[s1] = 'foo val';
+        // console.log(o);
+        // // {Symbol(foo): foo val}
+        // Object.defineProperty(o, s2, { value: 'bar val' , enumerable: true});
+        // console.log(o);
+        // // {Symbol(foo): foo val, Symbol(bar): bar val}
+        // Object.defineProperties(o, {
+        //     [s3]: { value: 'baz val' , enumerable: true},
+        //     [s4]: { value: 'qux val' , enumerable: true}
+        // });
+        // console.log(o);
+        // // {Symbol(foo): foo val, Symbol(bar): bar val,
+        // //   Symbol(baz): baz val, Symbol(qux): qux val}
+        
+
+        /**
+         * 因为符号属性是对内存中符号的一个引用，所以直接创建并用作属性的符号不会丢失。
+         * 但是，如果没有显式地保存对这些属性的引用，(重新创建的Symbol实际是另外的符合了，当然可以用Symbol.for创建全局唯一Symbol)
+         * 那么必须遍历对象的所有符号属性才能找到相应的属性键
+         */
+        // let o2 = {
+        //     [Symbol('foo')]: 'fooval',
+        //     [Symbol('bar')]: 'barval'
+        //   };
+        //   console.log(o2);
+        //   // {Symbol(foo): "foo val", Symbol(bar): "bar val"}
+        //   console.log(o2[Symbol('foo')]); 
+        //   // undefined
+        //   let barSymbol = Object.getOwnPropertySymbols(o2)
+        //                 .find((symbol) => symbol.toString().match(/bar/));
+        //   console.log(barSymbol);
+        //   // Symbol(bar)
+        
+        function Foo() {}
+        let f = new Foo();
+        console.log(f instanceof Foo); // true
+        class Bar {}
+        let b = new Bar();
+        console.log(b instanceof Bar); // true
+        //在ES6中，instanceof操作符会使用Symbol.hasInstance函数来确定关系
+        // console.log(Foo[Symbol.hasInstance](f)); // true
+        // console.log(Bar[Symbol.hasInstance](b)); // true
+
+        /**
+         * 这个属性定义在Function的原型上，因此默认在所有函数和类上都可以调用。
+         * 由于instanceof操作符会在原型链上寻找这个属性定义，
+         * 就跟在原型链上寻找其他属性一样，因此可以在继承的类上通过静态方法重新定义这个函数
+         */
+        // class Baz extends Bar {
+        //   static[Symbol.hasInstance](){
+        //     return false;
+        //   }
+        // }
+        // let bz = new Baz();
+        // console.log(Bar[Symbol.hasInstance](bz)); // true
+        // console.log(bz instanceof Bar);              // true
+        // console.log(Baz[Symbol.hasInstance](bz));//false
+        // console.log(bz instanceof Baz);             //false
+
+
+        /**
+         * Symbol.isConcatSpreadable
+         * 根据ECMAScript规范，这个符号作为一个属性表示“一个布尔值，
+         * 如果是true，则意味着对象应该用Array.prototype.concat()打平其数组元素”
+         */
+        let initial = ['foo'];
+        let array = ['bar'];
+        // console.log(array[Symbol.isConcatSpreadable]);   // undefined , 默认true, 数组对象默认情况下会被打平到已有的数组
+        // console.log(initial.concat(array));                // ['foo', 'bar']
+        // array[Symbol.isConcatSpreadable]=false;             // false，直接把数组对象添加到末尾
+        // console.log(initial.concat(array));                // ['foo', Array(1)]
+        // let arrayLikeObject = { length: 1, 0: 'baz' };
+        // console.log(arrayLikeObject[Symbol.isConcatSpreadable]);   // undefined, 默认fasle, 类数组对象默认情况下会被追加到数组末尾
+        // console.log(initial.concat(arrayLikeObject));                // ['foo', {...}]
+        // arrayLikeObject[Symbol.isConcatSpreadable]=true;              // true, 把对象拍平
+        // console.log(initial.concat(arrayLikeObject));                // ['foo', 'baz']
+        // let otherObject = new Set().add('qux');
+        // console.log(otherObject[Symbol.isConcatSpreadable]);   // undefined, 默认fasle, 其他不是类数组对象的对象被追加到数组末尾
+        // console.log(initial.concat(otherObject));                // ['foo', Set(1)]
+        // otherObject[Symbol.isConcatSpreadable]=true;             // true , 对象被忽略
+        // console.log(initial.concat(otherObject));                // ['foo']
     }
 }
 
@@ -215,4 +309,4 @@ let ts = new test()
 // ts.testNum()
 // ts.testString()
 // ts.testTagFunction()
-// ts.testSymbol()
+ts.testSymbol()
