@@ -228,7 +228,7 @@ second line`;
         // console.log(o);
         // // {Symbol(foo): foo val, Symbol(bar): bar val,
         // //   Symbol(baz): baz val, Symbol(qux): qux val}
-        
+
 
         /**
          * 因为符号属性是对内存中符号的一个引用，所以直接创建并用作属性的符号不会丢失。
@@ -247,11 +247,11 @@ second line`;
         //                 .find((symbol) => symbol.toString().match(/bar/));
         //   console.log(barSymbol);
         //   // Symbol(bar)
-        
-        function Foo() {}
+
+        function Foo() { }
         let f = new Foo();
         console.log(f instanceof Foo); // true
-        class Bar {}
+        class Bar { }
         let b = new Bar();
         console.log(b instanceof Bar); // true
         //在ES6中，instanceof操作符会使用Symbol.hasInstance函数来确定关系
@@ -309,9 +309,9 @@ second line`;
         let b = false;
         let f = 1.1;
         let o = {
-          valueOf() {
-            return -1;
-          }
+            valueOf() {
+                return -1;
+            }
         };
         // 在ts中，下面语句会报错，这其实是很坏的写法。
         // //Type 'number' is not assignable to type 'string'.
@@ -327,7 +327,7 @@ second line`;
 
         console.log(`"blue" : ${! ! "blue"}`); // true
         console.log(`0 : ${! !0}`);        // false
-        console.log(`NaN : ${! ! NaN}`);     // false
+        console.log(`NaN : ${! !NaN}`);     // false
         console.log(`"" : ${! ! ""}`);      // false
         console.log(`12345 : ${! !12345}`);   // true
         console.log(`null : ${! !null}`);   // false   
@@ -347,6 +347,39 @@ second line`;
         // console.log(`"55" == 55 : ${"55" == 55}`) // true
         // console.log(`"55" === 55 : ${"55" === 55}`) // false
     }
+
+    testStatement() {
+        break_outter:
+        for (let i = 0; i < 3; i++) {
+            console.log(`---- i : ${i}`)
+            for (let j = 0; j < 3; j++) {
+                console.log(`---- ---- j : ${j}`)
+                for (let k = 0; k < 3; k++) {
+                    console.log(`---- ---- ---- k : ${k}`)
+                    if (k === 1) {
+                        break break_outter;
+                    }
+                }
+            }
+        }
+
+        console.log('\n********************************\n')
+        
+        continue_outter:
+        for (let i = 0; i < 3; i++) {
+            console.log(`---- i : ${i}`)
+            for (let j = 0; j < 3; j++) {
+                console.log(`---- ---- j : ${j}`)
+                
+                for (let k = 0; k < 3; k++) {
+                    console.log(`---- ---- ---- k : ${k}`)
+                    if (k === 1) {
+                        continue continue_outter;
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -360,4 +393,5 @@ let ts = new test()
 // ts.testString()
 // ts.testTagFunction()
 // ts.testSymbol()
-ts.testOperator()
+// ts.testOperator()
+ts.testStatement()

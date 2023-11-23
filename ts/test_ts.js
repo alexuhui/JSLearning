@@ -313,16 +313,43 @@ var test = /** @class */ (function () {
         console.log("undefined : " + !!undefined); // false
         console.log("\"Brick\" < \"alphabet\" : " + ("Brick" < "alphabet")); // true
         console.log("\"23\" < \"3\" : " + ("23" < "3")); // true
-        // ts 中这会报错
-        // Operator '<' cannot be applied to types 'string' and 'number'.
-        console.log(`"23" < 3 : ${"23" < 3}`) // false
-        console.log(`"a" < 3 : ${"a" < 3}`) // false  字符"a"不能转换成任何有意义的数值，所以只能转换为NaN。这里有一个规则，即任何关系操作符在涉及比较NaN时都返回false
-        //This condition will always return 'false'.ts(2845)
-        console.log(`NaN == NaN : ${NaN == NaN}`) // false
-        // 相等和不相等操作符会先进行类型转换（通常称为强制类型转换）再确定操作数是否相等。
-        // ts 报错 This condition will always return 'false' since the types 'string' and 'number' have no overlap.
-        console.log(`"55" == 55 : ${"55" == 55}`) // true
-        console.log(`"55" === 55 : ${"55" === 55}`) // false
+        // // ts 中这会报错
+        // // Operator '<' cannot be applied to types 'string' and 'number'.
+        // console.log(`"23" < 3 : ${"23" < 3}`) // false
+        // console.log(`"a" < 3 : ${"a" < 3}`) // false  字符"a"不能转换成任何有意义的数值，所以只能转换为NaN。这里有一个规则，即任何关系操作符在涉及比较NaN时都返回false
+        // //This condition will always return 'false'.ts(2845)
+        // console.log(`NaN == NaN : ${NaN == NaN}`) // false
+        // // 相等和不相等操作符会先进行类型转换（通常称为强制类型转换）再确定操作数是否相等。
+        // // ts 报错 This condition will always return 'false' since the types 'string' and 'number' have no overlap.
+        // console.log(`"55" == 55 : ${"55" == 55}`) // true
+        // console.log(`"55" === 55 : ${"55" === 55}`) // false
+    };
+    test.prototype.testStatement = function () {
+        break_outter: for (var i = 0; i < 3; i++) {
+            console.log("---- i : " + i);
+            for (var j = 0; j < 3; j++) {
+                console.log("---- ---- j : " + j);
+                for (var k = 0; k < 3; k++) {
+                    console.log("---- ---- ---- k : " + k);
+                    if (k === 1) {
+                        break break_outter;
+                    }
+                }
+            }
+        }
+        console.log('\n********************************\n');
+        continue_outter: for (var i = 0; i < 3; i++) {
+            console.log("---- i : " + i);
+            for (var j = 0; j < 3; j++) {
+                console.log("---- ---- j : " + j);
+                for (var k = 0; k < 3; k++) {
+                    console.log("---- ---- ---- k : " + k);
+                    if (k === 1) {
+                        continue continue_outter;
+                    }
+                }
+            }
+        }
     };
     return test;
 }());
@@ -336,5 +363,6 @@ var ts = new test();
 // ts.testString()
 // ts.testTagFunction()
 // ts.testSymbol()
-ts.testOperator();
+// ts.testOperator()
+ts.testStatement();
 var templateObject_1, templateObject_2, templateObject_3;
