@@ -297,6 +297,56 @@ second line`;
         // otherObject[Symbol.isConcatSpreadable]=true;             // true , 对象被忽略
         // console.log(initial.concat(otherObject));                // ['foo']
     }
+
+    testOperator() {
+        // ----------- 一元运算符会把其它类型转换成number型（转不了数值就转成NaN）
+        let snum = "101"
+        let num = +snum
+        console.log(`num : ${num}  type : ${typeof (num)}`) //num : 101  type : number
+        let s1 = "01";
+        let s2 = "1.1";
+        let s3 = "z";
+        let b = false;
+        let f = 1.1;
+        let o = {
+          valueOf() {
+            return -1;
+          }
+        };
+        // 在ts中，下面语句会报错，这其实是很坏的写法。
+        // //Type 'number' is not assignable to type 'string'.
+        // s1 = +s1;   // 值变成数值1
+        // s2 = +s2;   // 值变成数值1.1
+        // s3 = +s3;   // 值变成NaN
+        // //'number' is not assignable to type 'boolean'.
+        // b = +b;     // 值变成数值0
+        // f = +f;     // 不变，还是1.1
+        // o = +o;     // 值变成数值-1
+        // console.log(`s1 : ${s1}    s2 : ${s2}   s3 : ${s3}    b : ${b}   f : ${f}   o : ${o}`)
+
+
+        console.log(`"blue" : ${! ! "blue"}`); // true
+        console.log(`0 : ${! !0}`);        // false
+        console.log(`NaN : ${! ! NaN}`);     // false
+        console.log(`"" : ${! ! ""}`);      // false
+        console.log(`12345 : ${! !12345}`);   // true
+        console.log(`null : ${! !null}`);   // false   
+        console.log(`undefined : ${! !undefined}`);   // false
+
+        console.log(`"Brick" < "alphabet" : ${"Brick" < "alphabet"}`) // true
+        console.log(`"23" < "3" : ${"23" < "3"}`) // true
+        // // ts 中这会报错
+        // // Operator '<' cannot be applied to types 'string' and 'number'.
+        // console.log(`"23" < 3 : ${"23" < 3}`) // false
+        // console.log(`"a" < 3 : ${"a" < 3}`) // false  字符"a"不能转换成任何有意义的数值，所以只能转换为NaN。这里有一个规则，即任何关系操作符在涉及比较NaN时都返回false
+        // //This condition will always return 'false'.ts(2845)
+        // console.log(`NaN == NaN : ${NaN == NaN}`) // false
+
+        // // 相等和不相等操作符会先进行类型转换（通常称为强制类型转换）再确定操作数是否相等。
+        // // ts 报错 This condition will always return 'false' since the types 'string' and 'number' have no overlap.
+        // console.log(`"55" == 55 : ${"55" == 55}`) // true
+        // console.log(`"55" === 55 : ${"55" === 55}`) // false
+    }
 }
 
 
@@ -309,4 +359,5 @@ let ts = new test()
 // ts.testNum()
 // ts.testString()
 // ts.testTagFunction()
-ts.testSymbol()
+// ts.testSymbol()
+ts.testOperator()
