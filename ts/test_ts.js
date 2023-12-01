@@ -366,6 +366,48 @@ var test = /** @class */ (function () {
                 console.log("More than 20.");
         }
     };
+    test.prototype.testObject = function () {
+        var name1 = "Nicholas";
+        var name2 = new String("Matt");
+        // // @ts-ignore   Property 'age' does not exist on type 'string'.ts(2339)
+        // name1.age = 27; //Cannot create property 'age' on string 'Nicholas'
+        // // @ts-ignore
+        // name2.age = 26;
+        // // @ts-ignore
+        // console.log(name1.age);     // undefined
+        // // @ts-ignore
+        // console.log(name2.age);     // 26
+        // console.log(typeof name1); // string
+        // console.log(typeof name2); // object
+        var obj = { val: "val 0" };
+        function setVal(obj) {
+            obj.val = "val 1";
+            obj = null;
+        }
+        setVal(obj);
+        console.log("obj : " + JSON.stringify(obj));
+    };
+    test.prototype.testDate = function () {
+        var date1 = new Date(2019, 0, 1); // 2019年1月1日
+        var date2 = new Date(2019, 1, 1); // 2019年2月1日
+        console.log("date1 = " + date1 + "   " + date1.valueOf() + "   " + typeof (date1) + "   " + (date1 instanceof Date) + " ");
+        console.log("date2 = " + date2);
+        console.log(date1 < date2); // true
+        console.log(date1 > date2); // false
+    };
+    test.prototype.testReqExp = function () {
+        var pattern = /aaa/g;
+        var str = "bbb aaaa ccc ddd eeee";
+        var matchs = pattern.exec(str);
+        console.log(matchs && matchs[0]);
+        console.log(pattern.lastIndex);
+        pattern.lastIndex = 3;
+        matchs = pattern.exec(str);
+        console.log(matchs && matchs[0]);
+        console.log(pattern.lastIndex);
+        pattern.lastIndex = 0;
+        console.log(pattern.test(str));
+    };
     return test;
 }());
 exports.test = test;
@@ -379,5 +421,8 @@ var ts = new test();
 // ts.testTagFunction()
 // ts.testSymbol()
 // ts.testOperator()
-ts.testStatement();
+// ts.testStatement()
+// ts.testObject()
+// ts.testDate()
+ts.testReqExp();
 var templateObject_1, templateObject_2, templateObject_3;

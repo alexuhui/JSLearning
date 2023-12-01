@@ -396,6 +396,55 @@ second line`;
             console.log("More than 20.");
         }
     }
+
+    testObject() {
+        let name1 = "Nicholas";
+        let name2 = new String("Matt");
+        // // @ts-ignore   Property 'age' does not exist on type 'string'.ts(2339)
+        // name1.age = 27; //Cannot create property 'age' on string 'Nicholas'
+        // // @ts-ignore
+        // name2.age = 26;
+        // // @ts-ignore
+        // console.log(name1.age);     // undefined
+        // // @ts-ignore
+        // console.log(name2.age);     // 26
+        // console.log(typeof name1); // string
+        // console.log(typeof name2); // object
+
+
+        let obj = { val: "val 0" }
+        function setVal(obj) {
+            obj.val = "val 1"
+            obj = null
+        }
+        setVal(obj)
+        console.log(`obj : ${JSON.stringify(obj)}`)
+    }
+
+    testDate() {
+        let date1 = new Date(2019, 0, 1);     // 2019年1月1日
+        let date2 = new Date(2019, 1, 1);     // 2019年2月1日
+        console.log(`date1 = ${date1}   ${date1.valueOf()}   ${typeof(date1)}   ${date1 instanceof Date} `)
+        console.log(`date2 = ${date2}`)
+        console.log(date1 < date2); // true
+        console.log(date1 > date2); // false
+    }
+
+    testReqExp() {
+        let pattern = /aaa/g
+        let str = `bbb aaaa ccc ddd eeee`
+        let matchs = pattern.exec(str)
+        console.log(matchs && matchs[0])
+        console.log(pattern.lastIndex)
+
+        pattern.lastIndex = 3
+        matchs = pattern.exec(str)
+        console.log(matchs && matchs[0])
+        console.log(pattern.lastIndex)
+
+        pattern.lastIndex = 0
+        console.log(pattern.test(str))
+    }
 }
 
 
@@ -410,4 +459,7 @@ let ts = new test()
 // ts.testTagFunction()
 // ts.testSymbol()
 // ts.testOperator()
-ts.testStatement()
+// ts.testStatement()
+// ts.testObject()
+// ts.testDate()
+ts.testReqExp()
