@@ -3,6 +3,33 @@ var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cook
     if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
     return cooked;
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.test = void 0;
 var test = /** @class */ (function () {
@@ -88,10 +115,30 @@ var test = /** @class */ (function () {
         var foo = { toString: function () { return 'World'; } };
         console.log("Hello, " + foo + "! "); // Hello, World!
         // 这两句直接写到js是可以的，ts转js报错
-        // error TS2339: Property 'raw' does not exist on type 'StringConstructor'
-        //         console.log(String.raw`first line\nceconed line`);
-        //         console.log(String.raw`first line
-        // ceconed line`);
+        // @ts-ignore  error TS2339: Property 'raw' does not exist on type 'StringConstructor'
+        console.log(String.raw(templateObject_1 || (templateObject_1 = __makeTemplateObject(["first line\nceconed line"], ["first line\\nceconed line"]))));
+        // @ts-ignore
+        console.log(String.raw(templateObject_2 || (templateObject_2 = __makeTemplateObject(["first line\nceconed line"], ["first line\nceconed line"]))));
+        var stringValue = "hello world";
+        console.log(stringValue.length); //"11"
+        var stringValue2 = "中文";
+        console.log(stringValue2.length); //"2"
+        console.log('-----------------');
+        // "smiling face with smiling eyes" 表情符号的编码是U+1F60A
+        // 0x1F60A === 128522
+        var message = "ab😊de";
+        console.log(message.length); // 6
+        console.log(message.charAt(1)); // b
+        console.log(message.charAt(2)); // <? >
+        console.log(message.charAt(3)); // <? >
+        console.log(message.charAt(4)); // d
+        console.log(message.charCodeAt(1)); // 98
+        console.log(message.charCodeAt(2)); // 55357
+        console.log(message.charCodeAt(3)); // 56842
+        console.log(message.charCodeAt(4)); // 100
+        // @ts-ignore   Property 'fromCodePoint' does not exist on type 'StringConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2550)
+        console.log(String.fromCodePoint(0x1F60A)); // 😊
+        console.log(String.fromCharCode(97, 98, 55357, 56842, 100, 101)); // ab😊de
     };
     test.prototype.testTagFunction = function () {
         var a = 6;
@@ -105,7 +152,7 @@ var test = /** @class */ (function () {
             return 'foobar';
         }
         var untaggedResult = a + " + " + b + " = " + (a + b);
-        var taggedResult = simpleTag(templateObject_1 || (templateObject_1 = __makeTemplateObject(["", "+", "=", " - ", ""], ["", "+", "=", " - ", ""])), a, b, a + b, 20);
+        var taggedResult = simpleTag(templateObject_3 || (templateObject_3 = __makeTemplateObject(["", "+", "=", " - ", ""], ["", "+", "=", " - ", ""])), a, b, a + b, 20);
         // ["", " + ", " = ", ""]
         // 6
         // 9
@@ -125,7 +172,7 @@ var test = /** @class */ (function () {
             }
             return 'foobar';
         }
-        var taggedResult2 = simpleTag2(templateObject_2 || (templateObject_2 = __makeTemplateObject(["", " + ", " = ", "     ", " + ", " = ", ""], ["", " + ", " = ", "     ", " + ", " = ", ""])), a, b, a + b, a, b, a + b);
+        var taggedResult2 = simpleTag2(templateObject_4 || (templateObject_4 = __makeTemplateObject(["", " + ", " = ", "     ", " + ", " = ", ""], ["", " + ", " = ", "     ", " + ", " = ", ""])), a, b, a + b, a, b, a + b);
         // ["", " + ", " = ", ""]
         // 6
         // 9
@@ -146,7 +193,7 @@ var test = /** @class */ (function () {
                     .join('');
         }
         var untaggedResult3 = a + " + " + b + " = " + (a + b);
-        var taggedResult3 = zipTag(templateObject_3 || (templateObject_3 = __makeTemplateObject(["fffff   ", " + ", " = ", "   ttttt"], ["fffff   ", " + ", " = ", "   ttttt"])), a, b, a + b);
+        var taggedResult3 = zipTag(templateObject_5 || (templateObject_5 = __makeTemplateObject(["fffff   ", " + ", " = ", "   ttttt"], ["fffff   ", " + ", " = ", "   ttttt"])), a, b, a + b);
         console.log(untaggedResult3); // "6 + 9 = 15"
         console.log(taggedResult3); // "6 + 9 = 15"
     };
@@ -386,6 +433,18 @@ var test = /** @class */ (function () {
         }
         setVal(obj);
         console.log("obj : " + JSON.stringify(obj));
+        //对象在布尔表达式中都会自动转换为true
+        var falseObject = new Boolean(false);
+        var result = falseObject && true;
+        console.log(result); // true
+        var falseValue = false;
+        result = falseValue && true;
+        console.log(result); // false
+        console.log(typeof falseObject); // object
+        console.log(typeof falseValue); // boolean
+        console.log(falseObject instanceof Boolean); // true
+        // @ts-ignore  The left-hand side of an 'instanceof' expression must be of type 'any', an object type or a type parameter.ts(2358)
+        console.log(falseValue instanceof Boolean); // false
     };
     test.prototype.testDate = function () {
         var date1 = new Date(2019, 0, 1); // 2019年1月1日
@@ -408,6 +467,92 @@ var test = /** @class */ (function () {
         pattern.lastIndex = 0;
         console.log(pattern.test(str));
     };
+    test.prototype.testMath = function () {
+        var values = [1, 2, 3, 4, 5, 6, 7, 8];
+        var max = Math.max.apply(Math, values);
+        console.log("max = " + max);
+    };
+    test.prototype.testArray = function () {
+        var _a;
+        // 字符串会被拆分为单字符数组
+        // @ts-ignore Property 'from' does not exist on type 'ArrayConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2550)
+        console.log(Array.from("Matt")); // ["M", "a", "t", "t"]
+        // 可以使用from()将集合和映射转换为一个新数组
+        // @ts-ignore Cannot find name 'Map'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2583)
+        var m = new Map().set(1, 2)
+            .set(3, 4);
+        // @ts-ignore Cannot find name 'Set'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2583)
+        var s = new Set().add(1)
+            .add(2)
+            .add(3)
+            .add(4);
+        // @ts-ignore
+        console.log(Array.from(m)); // [[1, 2], [3, 4]]
+        // @ts-ignore
+        console.log(Array.from(s)); // [1, 2, 3, 4]
+        // Array.from()对现有数组执行浅复制
+        var a1 = [1, 2, 3, 4];
+        // @ts-ignore
+        var a2 = Array.from(a1);
+        console.log(a1); // [1, 2, 3, 4]
+        console.log(a1 === a2); // false
+        // 可以使用任何可迭代对象
+        var iter = (_a = {},
+            // @ts-ignore
+            _a[Symbol.iterator] = function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, 1];
+                        case 1:
+                            _a.sent();
+                            return [4 /*yield*/, 2];
+                        case 2:
+                            _a.sent();
+                            return [4 /*yield*/, 3];
+                        case 3:
+                            _a.sent();
+                            return [4 /*yield*/, 4];
+                        case 4:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            },
+            _a);
+        // @ts-ignore
+        console.log(Array.from(iter)); // [1, 2, 3, 4]
+        // arguments对象可以被轻松地转换为数组
+        function getArgsArray() {
+            // @ts-ignore
+            return Array.from(arguments);
+        }
+        // @ts-ignore
+        console.log(getArgsArray(1, 2, 3, 4)); // [1, 2, 3, 4]
+        // from()也能转换带有必要属性的自定义对象
+        var arrayLikeObject = {
+            0: 1,
+            1: 2,
+            2: 3,
+            3: 4,
+            length: 4
+        };
+        // @ts-ignore
+        console.log(Array.from(arrayLikeObject)); // [1, 2, 3, 4]
+        var values = [0, 1, 5, 10, 15, 31, 100, 1000];
+        values.sort();
+        console.log(values); // 0,1,10,15,5
+        values.sort(function (a, b) {
+            return a - b;
+        });
+        console.log(values);
+        for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
+            var val = values_1[_i];
+            console.log("val is " + val);
+        }
+        values.forEach(function (val) {
+            console.log("val is " + val);
+        });
+    };
     return test;
 }());
 exports.test = test;
@@ -424,5 +569,7 @@ var ts = new test();
 // ts.testStatement()
 // ts.testObject()
 // ts.testDate()
-ts.testReqExp();
-var templateObject_1, templateObject_2, templateObject_3;
+// ts.testReqExp()
+// ts.testMath()
+ts.testArray();
+var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5;

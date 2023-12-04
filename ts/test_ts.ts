@@ -103,10 +103,34 @@ second line`;
         console.log(`Hello, ${foo}! `);        // Hello, World!
 
         // 这两句直接写到js是可以的，ts转js报错
-        // error TS2339: Property 'raw' does not exist on type 'StringConstructor'
-        //         console.log(String.raw`first line\nceconed line`);
-        //         console.log(String.raw`first line
-        // ceconed line`);
+        // @ts-ignore  error TS2339: Property 'raw' does not exist on type 'StringConstructor'
+        console.log(String.raw`first line\nceconed line`);
+        // @ts-ignore
+        console.log(String.raw`first line
+ceconed line`);
+
+        let stringValue = "hello world";
+        console.log(stringValue.length);//"11"
+        let stringValue2 = "中文";
+        console.log(stringValue2.length);//"2"
+
+
+        console.log('-----------------')
+        // "smiling face with smiling eyes" 表情符号的编码是U+1F60A
+        // 0x1F60A === 128522
+        let message = "ab😊de";
+        console.log(message.length);             // 6
+        console.log(message.charAt(1));         // b
+        console.log(message.charAt(2));         // <? >
+        console.log(message.charAt(3));         // <? >
+        console.log(message.charAt(4));         // d
+        console.log(message.charCodeAt(1));    // 98
+        console.log(message.charCodeAt(2));    // 55357
+        console.log(message.charCodeAt(3));    // 56842
+        console.log(message.charCodeAt(4));    // 100
+        // @ts-ignore   Property 'fromCodePoint' does not exist on type 'StringConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2550)
+        console.log(String.fromCodePoint(0x1F60A)); // 😊
+        console.log(String.fromCharCode(97, 98, 55357, 56842, 100, 101)); // ab😊de
     }
 
     testTagFunction() {
@@ -364,13 +388,13 @@ second line`;
         }
 
         console.log('\n********************************\n')
-        
+
         continue_outter:
         for (let i = 0; i < 3; i++) {
             console.log(`---- i : ${i}`)
             for (let j = 0; j < 3; j++) {
                 console.log(`---- ---- j : ${j}`)
-                
+
                 for (let k = 0; k < 3; k++) {
                     console.log(`---- ---- ---- k : ${k}`)
                     if (k === 1) {
@@ -383,17 +407,17 @@ second line`;
         // ------------- 这个写法还挺新颖
         let num = 25;
         switch (true) {
-          case num < 0:
-            console.log("Less than 0.");
-            break;
-          case num >= 0 && num <= 10:
-            console.log("Between 0 and 10.");
-            break;
-          case num > 10 && num <= 20:
-            console.log("Between 10 and 20.");
-            break;
-          default:
-            console.log("More than 20.");
+            case num < 0:
+                console.log("Less than 0.");
+                break;
+            case num >= 0 && num <= 10:
+                console.log("Between 0 and 10.");
+                break;
+            case num > 10 && num <= 20:
+                console.log("Between 10 and 20.");
+                break;
+            default:
+                console.log("More than 20.");
         }
     }
 
@@ -419,12 +443,26 @@ second line`;
         }
         setVal(obj)
         console.log(`obj : ${JSON.stringify(obj)}`)
+
+        //对象在布尔表达式中都会自动转换为true
+        let falseObject = new Boolean(false);
+        let result = falseObject && true;
+        console.log(result); // true
+        let falseValue = false;
+        result = falseValue && true;
+        console.log(result); // false
+
+        console.log(typeof falseObject);                // object
+        console.log(typeof falseValue);                  // boolean
+        console.log(falseObject instanceof Boolean); // true
+        // @ts-ignore  The left-hand side of an 'instanceof' expression must be of type 'any', an object type or a type parameter.ts(2358)
+        console.log(falseValue instanceof Boolean);   // false
     }
 
     testDate() {
         let date1 = new Date(2019, 0, 1);     // 2019年1月1日
         let date2 = new Date(2019, 1, 1);     // 2019年2月1日
-        console.log(`date1 = ${date1}   ${date1.valueOf()}   ${typeof(date1)}   ${date1 instanceof Date} `)
+        console.log(`date1 = ${date1}   ${date1.valueOf()}   ${typeof (date1)}   ${date1 instanceof Date} `)
         console.log(`date2 = ${date2}`)
         console.log(date1 < date2); // true
         console.log(date1 > date2); // false
@@ -445,6 +483,82 @@ second line`;
         pattern.lastIndex = 0
         console.log(pattern.test(str))
     }
+
+    testMath() {
+        let values = [1, 2, 3, 4, 5, 6, 7, 8];
+        let max = Math.max(...values);
+        console.log(`max = ${max}`)
+    }
+
+    testArray() {
+        // 字符串会被拆分为单字符数组
+        // @ts-ignore Property 'from' does not exist on type 'ArrayConstructor'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2550)
+        console.log(Array.from("Matt")); // ["M", "a", "t", "t"]
+        // 可以使用from()将集合和映射转换为一个新数组
+        // @ts-ignore Cannot find name 'Map'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2583)
+        const m = new Map().set(1, 2)
+            .set(3, 4);
+        // @ts-ignore Cannot find name 'Set'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2015' or later.ts(2583)
+        const s = new Set().add(1)
+            .add(2)
+            .add(3)
+            .add(4);
+        // @ts-ignore
+        console.log(Array.from(m)); // [[1, 2], [3, 4]]
+        // @ts-ignore
+        console.log(Array.from(s)); // [1, 2, 3, 4]
+        // Array.from()对现有数组执行浅复制
+        const a1 = [1, 2, 3, 4];
+        // @ts-ignore
+        const a2 = Array.from(a1);
+        console.log(a1);          // [1, 2, 3, 4]
+        console.log(a1 === a2); // false
+        // 可以使用任何可迭代对象
+        const iter = {
+            // @ts-ignore
+            *[Symbol.iterator]() {
+                yield 1;
+                yield 2;
+                yield 3;
+                yield 4;
+            }
+        };
+        // @ts-ignore
+        console.log(Array.from(iter)); // [1, 2, 3, 4]
+        // arguments对象可以被轻松地转换为数组
+        function getArgsArray() {
+            // @ts-ignore
+            return Array.from(arguments);
+        }
+        // @ts-ignore
+        console.log(getArgsArray(1, 2, 3, 4)); // [1, 2, 3, 4]
+        // from()也能转换带有必要属性的自定义对象
+        const arrayLikeObject = {
+            0: 1,
+            1: 2,
+            2: 3,
+            3: 4,
+            length: 4
+        };
+        // @ts-ignore
+        console.log(Array.from(arrayLikeObject)); // [1, 2, 3, 4]
+
+        let values = [0, 1, 5, 10, 15, 31, 100, 1000];
+        values.sort();
+        console.log(values);   // 0,1,10,15,5
+
+        values.sort((a, b) => {
+            return a - b;
+        })
+        console.log(values); 
+
+        for (const val of values) {
+            console.log(`val is ${val}`)
+        }
+        values.forEach(val => {
+            console.log(`val is ${val}`)
+        });
+    }
 }
 
 
@@ -462,4 +576,6 @@ let ts = new test()
 // ts.testStatement()
 // ts.testObject()
 // ts.testDate()
-ts.testReqExp()
+// ts.testReqExp()
+// ts.testMath()
+ts.testArray()
