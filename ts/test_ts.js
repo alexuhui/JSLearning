@@ -553,6 +553,16 @@ var test = /** @class */ (function () {
             console.log("val is " + val);
         });
     };
+    test.prototype.testIterator = function () {
+        function generatorFun() {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, "generator"];
+            });
+        }
+        var gfo = generatorFun();
+        // @ts-ignore
+        console.log(gfo.next());
+    };
     return test;
 }());
 exports.test = test;
@@ -571,5 +581,6 @@ var ts = new test();
 // ts.testDate()
 // ts.testReqExp()
 // ts.testMath()
-ts.testArray();
+// ts.testArray()
+ts.testIterator();
 var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5;

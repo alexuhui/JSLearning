@@ -559,6 +559,17 @@ ceconed line`);
             console.log(`val is ${val}`)
         });
     }
+
+    testIterator() {
+        function* generatorFun() {
+            return "generator"; 
+        }
+
+        let gfo = generatorFun()
+        // @ts-ignore Property 'next' does not exist on type '{}'.ts(2339)
+        // es 5 不支持生成器
+        console.log(gfo.next())
+    }
 }
 
 
@@ -578,4 +589,5 @@ let ts = new test()
 // ts.testDate()
 // ts.testReqExp()
 // ts.testMath()
-ts.testArray()
+// ts.testArray()
+ts.testIterator()
