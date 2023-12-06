@@ -445,6 +445,47 @@ var test = /** @class */ (function () {
         console.log(falseObject instanceof Boolean); // true
         // @ts-ignore  The left-hand side of an 'instanceof' expression must be of type 'any', an object type or a type parameter.ts(2358)
         console.log(falseValue instanceof Boolean); // false
+        var person = new Object();
+        // @ts-ignore Property 'name' does not exist on type 'Object'.ts(2339)
+        person.name = "Nicholas";
+        // @ts-ignore
+        person.age = 29;
+        // @ts-ignore
+        person.job = "Software Engineer";
+        // @ts-ignore
+        person.sayName = function () {
+            // @ts-ignore Property 'name' does not exist on type 'Object'.ts(2339)
+            console.log(this.name);
+        };
+        // @ts-ignore Property 'sayName' does not exist on type 'Object'.ts(2339)
+        person.sayName();
+        person['sayName']();
+        // runtime error : TypeError: person.sayName_wrong is not a function
+        // 也就是说用方括号引用属性的错误到运行时才能暴露
+        // person['sayName_wrong']();
+        /** ts 支持的对象属性定义 */
+        Object.defineProperty(person, "nickname", { value: "pp" });
+        Object.defineProperty(person, 'sayNickname', { value: function () {
+                console.log("nickname : ", this.nickname);
+            }
+        });
+        // @ts-ignore Property 'sayNickname' does not exist on type 'Object'.ts(2339)
+        // ??? 怎么访问呢？
+        person.sayNickname();
+        person['sayNickname']();
+        var des = Object.getOwnPropertyDescriptor(person, "sayNickname");
+        console.log("----- sayNickname property : " + (des === null || des === void 0 ? void 0 : des.value));
+        des === null || des === void 0 ? void 0 : des.value(); // 输出 nickname :  undefined ？？？
+        /** ts支持的对象字面量 */
+        var person2 = {
+            name: "Nicholas 222",
+            age: 29,
+            job: "Software Engineer 222",
+            sayName: function () {
+                console.log(this.name);
+            }
+        };
+        person2.sayName();
     };
     test.prototype.testDate = function () {
         var date1 = new Date(2019, 0, 1); // 2019年1月1日
@@ -560,7 +601,8 @@ var test = /** @class */ (function () {
             });
         }
         var gfo = generatorFun();
-        // @ts-ignore
+        // @ts-ignore Property 'next' does not exist on type '{}'.ts(2339)
+        // es 5 不支持生成器
         console.log(gfo.next());
     };
     return test;
@@ -577,10 +619,10 @@ var ts = new test();
 // ts.testSymbol()
 // ts.testOperator()
 // ts.testStatement()
-// ts.testObject()
+ts.testObject();
+var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5;
 // ts.testDate()
 // ts.testReqExp()
 // ts.testMath()
 // ts.testArray()
-ts.testIterator();
-var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5;
+// ts.testIterator()

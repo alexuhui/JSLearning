@@ -457,6 +457,53 @@ ceconed line`);
         console.log(falseObject instanceof Boolean); // true
         // @ts-ignore  The left-hand side of an 'instanceof' expression must be of type 'any', an object type or a type parameter.ts(2358)
         console.log(falseValue instanceof Boolean);   // false
+
+
+        let person = new Object();
+        // @ts-ignore Property 'name' does not exist on type 'Object'.ts(2339)
+        person.name = "Nicholas";
+        // @ts-ignore
+        person.age = 29;
+        // @ts-ignore
+        person.job = "Software Engineer";
+        // @ts-ignore
+        person.sayName = function () {
+            // @ts-ignore Property 'name' does not exist on type 'Object'.ts(2339)
+            console.log(this.name);
+        };
+        // @ts-ignore Property 'sayName' does not exist on type 'Object'.ts(2339)
+        person.sayName();
+        person['sayName']();
+        // runtime error : TypeError: person.sayName_wrong is not a function
+        // 也就是说用方括号引用属性的错误到运行时才能暴露
+        // person['sayName_wrong']();
+
+        /** ts 支持的对象属性定义 */
+        Object.defineProperty(person, "nickname", { value: "pp" });
+        Object.defineProperty(person, 'sayNickname', {value : function () { 
+            console.log("nickname : ", this.nickname)
+        }
+        })
+        // @ts-ignore Property 'sayNickname' does not exist on type 'Object'.ts(2339)
+        // ??? 怎么访问呢？
+        person.sayNickname()
+        person['sayNickname']()
+        let des = Object.getOwnPropertyDescriptor(person, "sayNickname")
+        console.log(`----- sayNickname property : ${des?.value}`)
+        des?.value()  // 输出 nickname :  undefined ？？？
+
+        /** ts支持的对象字面量 */
+        let person2 = {
+            name: "Nicholas 222",
+            age: 29,
+            job: "Software Engineer 222",
+            sayName : function() {
+                console.log(this.name);
+            }
+        };
+        person2.sayName()
+
+
     }
 
     testDate() {
@@ -550,7 +597,7 @@ ceconed line`);
         values.sort((a, b) => {
             return a - b;
         })
-        console.log(values); 
+        console.log(values);
 
         for (const val of values) {
             console.log(`val is ${val}`)
@@ -562,7 +609,7 @@ ceconed line`);
 
     testIterator() {
         function* generatorFun() {
-            return "generator"; 
+            return "generator";
         }
 
         let gfo = generatorFun()
@@ -585,9 +632,9 @@ let ts = new test()
 // ts.testSymbol()
 // ts.testOperator()
 // ts.testStatement()
-// ts.testObject()
+ts.testObject()
 // ts.testDate()
 // ts.testReqExp()
 // ts.testMath()
 // ts.testArray()
-ts.testIterator()
+// ts.testIterator()
