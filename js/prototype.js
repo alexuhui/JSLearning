@@ -10,7 +10,7 @@ function Person() {
     Person.prototype.sayName = function () {
         console.log(`persion name : ${this.name}`)
     }
- }
+}
 /**
 * 声明之后，构造函数就有了一个
 * 与之关联的原型对象：
@@ -65,7 +65,7 @@ console.log(person1.__proto__.constructor === Person); // true
 /**
 * 同一个构造函数创建的两个实例
 * 共享同一个原型对象：
-*/ 
+*/
 console.log(person1.__proto__ === person2.__proto__); // true
 /**
 * instanceof检查实例的原型链中
@@ -132,3 +132,55 @@ person1.nickname = 'black pig'
 for (const pro in person1) {
     console.log('pro in person1 : ', pro, person1[pro])
 }
+
+
+console.log(`\n ---------------------- String.prototype`)
+for (const pro in Object.entries(String.prototype)) {
+    console.log(pro)
+}
+
+String.prototype.startsWith2 = function (text) {
+    return this.indexOf(text) === 0;
+};
+
+String.prototype.toup = function (str) {
+    return this.toUpperCase(str)
+}
+
+let msg = "Hello world! ";
+console.log(msg.startsWith2("Hello"));   // true
+console.log(msg.toup(msg));   // HELLO WORLD!
+
+
+
+console.log(`\n ---------------------- 原型模式属性共享带来的问题`)
+/**
+ * 原型上的所有属性是在实例间共享的，这对函数来说比较合适。
+ * 另外包含原始值的属性也还好，如前面例子中所示，可以通过在实例上添加同名属性来简单地遮蔽原型上的属性。
+ * 真正的问题来自包含引用值的属性。
+ */
+function Person3() { }
+Person3.prototype = {
+    constructor: Person3,
+    name: "Nicholas",
+    age: 29,
+    job: "Software Engineer",
+    friends: ["Shelby", "Court"],
+    sayName() {
+        console.log(this.name);
+    }
+};
+let Person31 = new Person3();
+let Person32 = new Person3();
+Person31.friends.push("Van");
+// Person31.friends 和 Person32.friends 指向同一数组
+console.log(Person31.friends);   // [ 'Shelby', 'Court', 'Van' ]
+console.log(Person32.friends);   // [ 'Shelby', 'Court', 'Van' ]
+console.log(Person31.friends === Person32.friends);   // true
+
+// 对Person31.frends 重新建立新引用
+Person31.friends = Array(...Person31.friends)
+Person31.friends.push('John')
+console.log(Person31.friends);   // [ 'Shelby', 'Court', 'Van', 'John' ]
+console.log(Person32.friends);   // [ 'Shelby', 'Court', 'Van' ]
+console.log(Person31.friends === Person32.friends);   // false
